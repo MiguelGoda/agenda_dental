@@ -20,6 +20,19 @@ def get_week_days(base_date):
     return [monday + timedelta(days=i) for i in range(5)]
 
 
+def week_anchor():
+    """Punto de partida para 'esta semana' (offset=0).
+
+    Si hoy es sábado o domingo, la semana lunes-viernes que contiene hoy ya
+    terminó o está por arrancar fuera de horario de atención, así que el
+    ancla salta al próximo lunes en vez de mostrar una semana pasada.
+    """
+    today = date.today()
+    if today.weekday() >= 5:  # 5 = sábado, 6 = domingo
+        today += timedelta(days=7 - today.weekday())
+    return today
+
+
 def build_calendar(week_days):
     """Construye la grilla: para cada slot, qué días están ocupados."""
     # Traer todos los turnos de la semana de una sola query
@@ -54,7 +67,7 @@ def calendario_publico(request):
 
     # Navegación por semanas
     offset = int(request.GET.get("semana", 0))
-    base_date = today + timedelta(weeks=offset)
+    base_date = week_anchor() + timedelta(weeks=offset)
     week_days = get_week_days(base_date)
 
     calendar = build_calendar(week_days)
@@ -75,7 +88,7 @@ def calendario_staff(request):
     today = date.today()
 
     offset = int(request.GET.get("semana", 0))
-    base_date = today + timedelta(weeks=offset)
+    base_date = week_anchor() + timedelta(weeks=offset)
     week_days = get_week_days(base_date)
 
     calendar = build_calendar(week_days)
