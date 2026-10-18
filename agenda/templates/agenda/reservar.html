@@ -1,0 +1,88 @@
+{% extends "agenda/base.html" %}
+
+{% block title %}Reservar Turno{% endblock %}
+
+{% block content %}
+<div class="max-w-lg mx-auto">
+    <div class="mb-6">
+        <a href="{% url 'staff_calendario' %}" class="text-blue-600 hover:underline text-sm">← Volver al calendario</a>
+        <h1 class="text-2xl font-bold text-gray-800 mt-2">Reservar turno</h1>
+        <p class="text-gray-500 mt-1">
+            📅 <strong>{{ appt_date }}</strong> &nbsp;|&nbsp; ⏰ <strong>{{ appt_time }}</strong>
+        </p>
+    </div>
+
+    <div class="bg-white rounded-xl shadow p-6">
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="date" value="{{ appt_date }}">
+            <input type="hidden" name="start_time" value="{{ appt_time }}">
+
+            <!-- Selector de paciente existente -->
+            {% if patients %}
+            <div class="mb-5">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                    Paciente existente <span class="text-gray-400 font-normal">(opcional)</span>
+                </label>
+                <select name="patient_id" id="patient_select"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        onchange="toggleNewPatient(this.value)">
+                    <option value="">— Nuevo paciente —</option>
+                    {% for p in patients %}
+                    <option value="{{ p.id }}">{{ p.name }} ({{ p.phone }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
+
+            <!-- Datos nuevo paciente -->
+            <div id="new_patient_fields">
+                <div class="mb-4">
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Nombre completo *</label>
+                    <input type="text" name="name"
+                           class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                           placeholder="Ej: María García">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Teléfono *</label>
+                    <input type="text" name="phone"
+                           class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                           placeholder="Ej: 011 15-1234-5678">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Email <span class="text-gray-400 font-normal">(opcional)</span></label>
+                    <input type="email" name="email"
+                           class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                           placeholder="Ej: maria@email.com">
+                </div>
+            </div>
+
+            <!-- Notas -->
+            <div class="mb-6">
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Notas <span class="text-gray-400 font-normal">(opcional)</span></label>
+                <textarea name="notes" rows="3"
+                          class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                          placeholder="Ej: Primera consulta, dolor muela del juicio..."></textarea>
+            </div>
+
+            <div class="flex gap-3">
+                <button type="submit"
+                        class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition-colors">
+                    Confirmar turno
+                </button>
+                <a href="{% url 'staff_calendario' %}"
+                   class="flex-1 text-center border border-gray-300 hover:bg-gray-50 text-gray-600 font-semibold py-2.5 rounded-lg transition-colors">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function toggleNewPatient(value) {
+    const fields = document.getElementById('new_patient_fields');
+    fields.style.display = value ? 'none' : 'block';
+}
+</script>
+{% endblock %}

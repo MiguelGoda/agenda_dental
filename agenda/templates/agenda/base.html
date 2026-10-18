@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Agenda Dental{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="bg-blue-700 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="{% url 'calendario' %}" class="text-xl font-bold flex items-center gap-2">
+                🦷 Agenda Dental
+            </a>
+            <div class="flex gap-4 items-center text-sm">
+                {% if user.is_authenticated %}
+                    <span class="opacity-80">{{ user.get_full_name|default:user.username }}</span>
+                    <a href="{% url 'staff_calendario' %}" class="bg-white text-blue-700 px-3 py-1 rounded font-semibold hover:bg-blue-50">Panel Staff</a>
+                    <a href="{% url 'logout' %}" class="hover:underline opacity-80">Salir</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="bg-white text-blue-700 px-3 py-1 rounded font-semibold hover:bg-blue-50">Staff</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mensajes -->
+    {% if messages %}
+    <div class="max-w-6xl mx-auto px-4 mt-4">
+        {% for message in messages %}
+        <div class="px-4 py-3 rounded mb-2 {% if message.tags == 'error' %}bg-red-100 text-red-700 border border-red-300{% else %}bg-green-100 text-green-700 border border-green-300{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Contenido -->
+    <main class="max-w-6xl mx-auto px-4 py-6">
+        {% block content %}{% endblock %}
+    </main>
+
+</body>
+</html>
