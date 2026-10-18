@@ -21,7 +21,10 @@
                 {% if user.is_authenticated %}
                     <span class="opacity-80">{{ user.get_full_name|default:user.username }}</span>
                     <a href="{% url 'staff_calendario' %}" class="bg-white text-blue-700 px-3 py-1 rounded font-semibold hover:bg-blue-50">Panel Staff</a>
-                    <a href="{% url 'logout' %}" class="hover:underline opacity-80">Salir</a>
+                    <form method="post" action="{% url 'logout' %}" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="hover:underline opacity-80 bg-transparent border-0 cursor-pointer text-white">Salir</button>
+                    </form>
                 {% else %}
                     <a href="{% url 'login' %}" class="bg-white text-blue-700 px-3 py-1 rounded font-semibold hover:bg-blue-50">Staff</a>
                 {% endif %}
