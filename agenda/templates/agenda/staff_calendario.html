@@ -55,25 +55,11 @@
                             Libre — Reservar
                         </a>
                         {% else %}
-                        <div class="group relative inline-block">
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rose-50 text-rose-700 font-medium text-xs ring-1 ring-rose-200 cursor-default">
-                                <span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
-                                {{ cell.appointment.patient.name|truncatechars:15 }}
-                            </span>
-                            <!-- Tooltip con botón cancelar -->
-                            <div class="hidden group-hover:block absolute z-10 bottom-full left-1/2 -translate-x-1/2 mb-2 bg-slate-800 text-white text-xs rounded-xl p-3 w-48 shadow-lg">
-                                <div class="font-semibold mb-1">{{ cell.appointment.patient.name }}</div>
-                                <div class="text-slate-300 mb-2">📞 {{ cell.appointment.patient.phone }}</div>
-                                {% if cell.appointment.notes %}
-                                <div class="text-slate-400 mb-2 italic">{{ cell.appointment.notes|truncatechars:40 }}</div>
-                                {% endif %}
-                                <a href="{% url 'cancelar' cell.appointment.id %}"
-                                   onclick="return confirm('¿Cancelar el turno de {{ cell.appointment.patient.name }}?')"
-                                   class="block mt-2 text-center bg-rose-500 hover:bg-rose-600 text-white px-2 py-1.5 rounded-lg text-xs font-medium transition-colors">
-                                    Cancelar turno
-                                </a>
-                            </div>
-                        </div>
+                        <a href="{% url 'detalle_turno' cell.appointment.id %}"
+                           class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rose-50 text-rose-700 font-medium text-xs ring-1 ring-rose-200 hover:bg-rose-100 hover:ring-rose-300 transition-colors cursor-pointer">
+                            <span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
+                            {{ cell.appointment.patient.name|truncatechars:15 }}
+                        </a>
                         {% endif %}
                     </td>
                     {% endfor %}
@@ -90,7 +76,7 @@
         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Libre (clic para reservar)
     </span>
     <span class="flex items-center gap-2">
-        <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span> Ocupado (hover para ver detalles)
+        <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span> Ocupado (clic para ver detalles)
     </span>
 </div>
 {% endblock %}

@@ -135,6 +135,13 @@ def reservar(request):
 
 
 @login_required
+def detalle_turno(request, appt_id):
+    """Muestra los datos del paciente y el turno, con opción de cancelar."""
+    appt = get_object_or_404(Appointment, id=appt_id)
+    return render(request, "agenda/detalle_turno.html", {"appt": appt})
+
+
+@login_required
 def cancelar(request, appt_id):
     """Cancela (elimina) un turno."""
     appt = get_object_or_404(Appointment, id=appt_id)

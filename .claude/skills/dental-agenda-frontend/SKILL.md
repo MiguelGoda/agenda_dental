@@ -48,6 +48,16 @@ Mantenelo así — el deploy a PythonAnywhere depende de que no haya paso de com
 7. **Un solo sistema de componentes.** Botones, badges, inputs y cards deben verse igual
    en los 5 templates. Si cambiás el estilo de un botón en `reservar.html`, aplicá el
    mismo estilo en `login.html` y `staff_calendario.html`.
+8. **Nada de tooltips flotantes dentro de la grilla.** La tabla del calendario vive en un
+   `div` con `overflow-x-auto` (necesario para el scroll horizontal en mobile). Por una
+   particularidad de CSS, eso también clippea el eje vertical, así que cualquier elemento
+   `position: absolute` que intente salir del contenedor (como un tooltip con `bottom-full`)
+   se corta, sobre todo en la primera fila. Ya pasó una vez con el popup de detalle de
+   turno en `staff_calendario.html` — se resolvió con una página de detalle (`detalle_turno`)
+   en vez de un popup. Para info adicional de una celda, preferí un link a una página
+   propia (como `reservar.html`/`detalle_turno.html`) en vez de un overlay posicionado
+   sobre la tabla. Además, hover no funciona en touch, así que un patrón "clic → página"
+   es más robusto que "hover → tooltip" en cualquier caso.
 
 ## Qué NO tocar
 

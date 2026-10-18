@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Agenda Dental{% endblock %}</title>
+    <title>{% block title %}Clínica Odontológica Integral{% endblock %}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -23,14 +23,17 @@
         body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body class="bg-slate-50 min-h-screen font-sans text-slate-800">
+<body class="bg-slate-50 min-h-screen flex flex-col font-sans text-slate-800">
 
     <!-- Navbar -->
     <nav class="bg-teal-800 text-white shadow-md">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
-            <a href="{% url 'calendario' %}" class="text-xl font-bold tracking-tight flex items-center gap-2">
-                <span class="text-2xl">🦷</span>
-                <span>Clínica Dental</span>
+            <a href="{% url 'calendario' %}" class="flex items-center gap-2.5 min-w-0">
+                <span class="text-2xl shrink-0">🦷</span>
+                <span class="leading-tight min-w-0">
+                    <span class="block text-sm sm:text-lg font-bold tracking-tight truncate">Clínica Odontológica Integral</span>
+                    <span class="block text-xs text-teal-200 font-medium truncate">Dra. Mariela Molina Cuellar</span>
+                </span>
             </a>
             <div class="flex gap-3 items-center text-sm">
                 {% if user.is_authenticated %}
@@ -59,9 +62,19 @@
     {% endif %}
 
     <!-- Contenido -->
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex-1 w-full">
         {% block content %}{% endblock %}
     </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-200 bg-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5 text-sm text-slate-500">
+            <span>Clínica Odontológica Integral — Dra. Mariela Molina Cuellar</span>
+            <a href="tel:73421293" class="flex items-center gap-1.5 font-medium text-slate-600 hover:text-teal-700 transition-colors">
+                📞 73421293
+            </a>
+        </div>
+    </footer>
 
 </body>
 </html>
